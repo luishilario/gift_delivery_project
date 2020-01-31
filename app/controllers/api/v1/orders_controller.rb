@@ -9,11 +9,11 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   # GET /orders/1
-  def show
-    render json: @order
-  end
+  # def show
+  #   render json: @order
+  # end
 
-  # GET /recipients/:school_id
+  # GET /orders/:school_id
   def show_by_school_id
     school = School.find_by_id(params[:school_id])
     if school.present? && school.status == 1

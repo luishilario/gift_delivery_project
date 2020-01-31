@@ -15,11 +15,9 @@ default: &default
 
 development:
   adapter: postgresql
-  encoding: unicode
-  database: projectname
-  pool:
-  username: rails
-  password: password
+  host: localhost
+  username: user
+  database: app-dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
