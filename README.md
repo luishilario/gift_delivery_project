@@ -1,30 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
 Ruby Version: ruby 2.6.3p62
 
 Rails Version: Rails 6.0.2.1
 
-To install dependencies please run:
-bundle install
+To install and run locally:
 
-Database creation and initialization
-db:setup
-db:migrate
+- Clone
+- Run in root:
+    - bundle install
+    - rails db:migrate
+    - rails db:seed
+    - rails s
 
-Loads the seed data
-db:seed
+Api default url: http://localhost:3000
 
-* Database initialization
+Api is also hosted on Heroku:
+https://gift-delivery.herokuapp.com
 
-* How to run the test suite
+Authentication can be done with the following credentials:
+email : example@mail.com
+password : pass123
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Swagger yml file can be found in root.
