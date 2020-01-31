@@ -5,13 +5,19 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+Ruby Version: ruby 2.6.3p62
 
-* System dependencies
+Rails Version: Rails 6.0.2.1
 
-* Configuration
+To install dependencies please run:
+bundle install
 
-* Database creation
+Database creation and initialization
+db:setup
+db:migrate
+
+Loads the seed data
+db:seed
 
 * Database initialization
 

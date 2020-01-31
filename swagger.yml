@@ -1,0 +1,369 @@
+swagger: '2.0'
+info:
+  description: 'API to enable the gift delivery service.'
+  version: 1.0.1
+  title: Thrillshare School Gift Delivery
+host: gift-delivery.herokuapp.com
+basePath: /v1
+tags:
+  - name: Schools
+    description: School related endpoints to manage schools that will use the service.
+  - name: Recipients
+    description: Recipent related endpoints to manage who gets gifts
+  - name: Orders
+    description: Order related endpoints
+  - name: Users
+    description: Manage authentication
+schemes:
+  - https
+definitions:
+    Recipient:
+      type: integer
+    Gift:
+      type: integer
+paths:
+  '/schools/create':
+    post:
+      tags:
+        - Schools
+      summary: Create School
+      description: Create a school record. The school name and address are required.
+      operationId: createSchool
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: school
+          description: The school to create.
+          schema:
+            type: object
+            required:
+              - name
+              - address
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+  '/schools/{schoolId}':
+    patch:
+      tags:
+        - Schools
+      summary: Update School
+      description: The Description
+      operationId: updateSchool
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: schoolId
+          type: integer
+          required: true
+          description: Numeric ID of the school to update
+        - in: body
+          name: school
+          description: The school to create.
+          schema:
+            type: object
+            required:
+              - name
+              - address
+            properties:
+              name:
+                type: string
+              address:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+    delete:
+      tags:
+        - Schools
+      summary: Delete School
+      description: Remove a School from the database.
+      operationId: deleteSchool
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: schoolId
+          type: integer
+          required: true
+          description: Numeric ID of the school to update
+      responses:
+        '200':
+          description: successful operation
+  '/recipients/create':
+    post:
+      tags:
+        - Recipients
+      summary: Create Recipient
+      description: Create a recipient record to receive the gift. Name and address required.
+      operationId: createRecipient
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: recipient
+          description: The recipient to create.
+          schema:
+            type: object
+            required:
+              - name
+              - address
+              - shool_id
+            properties:
+              school_id:
+                type: integer
+              name:
+                type: string
+              address:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+  '/recipients/{id}':
+    patch:
+      tags:
+        - Recipients
+      summary: Update Recipient
+      description: Update any recipient record data.
+      operationId: updateRecipient
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the recipient to update
+        - in: body
+          name: recipient
+          description: The recipient to create.
+          schema:
+            type: object
+            required:
+              - name
+              - address
+              - shool_id
+            properties:
+              school_id:
+                type: integer
+              name:
+                type: string
+              address:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+    delete:
+      tags:
+        - Recipients
+      summary: Delete Recipient
+      description: Remove a recipient from the database.
+      operationId: deleteRecipient
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the recipient to delete
+      responses:
+        '200':
+          description: successful operation
+    get:
+      tags:
+        - Recipients
+      summary: Get Recipients
+      description: Show all recipients (associated with a school id).
+      operationId: getRecipients
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the school to filter recipients by.
+      responses:
+        '200':
+          description: successful operation
+  '/orders/create':
+    post:
+      tags:
+        - Orders
+      summary: Create Order
+      description: Create a gift Order. A gift type and at least one Recipient are required.
+      operationId: createOrder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: order
+          description: The order to create.
+          schema:
+            type: object
+            required:
+              - gifts
+              - recipients
+              - shool_id
+            properties:
+              school_id:
+                type: integer
+              recipients:
+                type: array
+                items: {$ref: '#/definitions/Recipient'}
+              gifts:
+                type: array
+                items: {$ref: '#/definitions/Gift'}
+              notification:
+                type: integer
+      responses:
+        '200':
+          description: successful operation
+  '/orders/{id}':
+    patch:
+      tags:
+        - Orders
+      summary: Update Order
+      description: Updates an Order. Can only be done when order is not ORDER_SHIPPED.
+      operationId: updateOrders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the order to update
+        - in: body
+          name: order
+          description: The order to update.
+          schema:
+            type: object
+            required:
+              - gifts
+              - recipients
+            properties:
+              recipients:
+                type: array
+                items: {$ref: '#/definitions/Recipient'}
+              gifts:
+                type: array
+                items: {$ref: '#/definitions/Gift'}
+              notification:
+                type: integer
+              status:
+                type: string
+      responses:
+        '200':
+          description: successful operation
+    delete:
+      tags:
+        - Orders
+      summary: Cancel Order
+      description: Cancels an Order. Can only be done when order is not ORDER_SHIPPED.
+      operationId: cancelOrder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the order to delete
+      responses:
+        '200':
+          description: successful operation
+    get:
+      tags:
+        - Orders
+      summary: Get Orders
+      description: The Description
+      operationId: getOrders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the school to filter orders by.
+      responses:
+        '200':
+          description: successful operation
+  '/orders/{id}/ship':
+    patch:
+      tags:
+        - Orders
+      summary: Ship Order
+      description: The Description
+      operationId: shipOrder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Numeric ID of the order to ship.
+      responses:
+        '200':
+          description: successful operation
+  '/authenticate':
+    post:
+        tags:
+          - Users
+        summary: Authenticate
+        description: Endpoint to get JWT token.
+        operationId: authenticateUser
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: user
+            description: The user to authenticate with.
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                passwprd:
+                  type: string
+        responses:
+          '200':
+            description: successful operation
